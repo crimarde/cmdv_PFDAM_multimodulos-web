@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+ 	xmlns:context="http://www.springframework.org/schema/context"
+ 	xmlns:mvc="http://www.springframework.org/schema/mvc"
+ 	xmlns:util="http://www.springframework.org/schema/util" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans 
+    	http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop 
+        http://www.springframework.org/schema/aop/spring-aop-4.1.xsd
+        http://www.springframework.org/schema/util 
+ 		http://www.springframework.org/schema/util/spring-util-4.1.xsd
+ 		http://www.springframework.org/schema/mvc 
+		http://www.springframework.org/schema/mvc/spring-mvc-4.1.xsd
+ 		http://www.springframework.org/schema/context 
+ 		http://www.springframework.org/schema/context/spring-context-4.1.xsd
+        http://www.springframework.org/schema/tx 
+        http://www.springframework.org/schema/tx/spring-tx-4.1.xsd">
+ 
+ 	<!-- Definición del datasource -->
+	
+	<!-- MySQL sustituido por un H2 en memoria -->
+<!-- 	<bean id="dataSource" -->
+<!-- 		class="org.springframework.jdbc.datasource.DriverManagerDataSource"> -->
+<!-- 		<property name="driverClassName" value="${database.driver}" /> -->
+<!-- 		<property name="url" value="${database.url}" /> -->
+<!-- 		<property name="username" value="${database.user}" /> -->
+<!-- 		<property name="password" value="${database.password}" /> -->
+<!-- 	</bean> -->
+	
+	<bean id="dataSource"
+          class="org.h2.jdbcx.JdbcDataSource">
+        <property name="URL" value="${h2URL}"/>
+        <property name="user" value="${h2User}"/>
+        <property name="password" value="${h2Pass}"/>
+    </bean>
+    
+    <!-- Run H2 web server within application that will access the same in-memory database -->
+	<bean id="h2Server" class="org.h2.tools.Server" factory-method="createTcpServer" init-method="start" destroy-method="stop" depends-on="h2WebServer">
+    	<constructor-arg value="-tcp,-tcpAllowOthers,-tcpPort,9092"/>
+	</bean>
+	<bean id="h2WebServer" class="org.h2.tools.Server" factory-method="createWebServer" init-method="start" destroy-method="stop">
+    	<constructor-arg value="-web,-webAllowOthers,-webPort,8082"/>
+	</bean>
+     
+</beans>

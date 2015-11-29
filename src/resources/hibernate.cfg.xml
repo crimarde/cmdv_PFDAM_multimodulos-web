@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>       
+  	<session-factory>
+    	<property name="dialect">org.hibernate.dialect.MySQLDialect</property>
+    	<property name="show_sql">${hibernate.show_sql}</property> 
+    	<property name="format_sql">${hibernate.format_sql}</property> 
+    	
+    	<!-- El método de Hibernate SessionFactory getCurrentSession() devuelve la sesión ligada al contexto. 
+    	Pero para que esto funcione , tenemos que incluir la línea de abajo en el archivo de configuración de hibernate.
+    	Sin esta linea da el error:
+    	Exception in thread "main" org.hibernate.HibernateException: No CurrentSessionContext configured! -->
+<!--     	<property name="current_session_context_class">thread</property> -->
+		
+		
+		<!-- Soluciona el error que devolvía un objeto nulo -->
+<!-- 		<property name="hibernate.enable_lazy_load_no_trans">true</property> -->
+    	
+  	</session-factory>
+</hibernate-configuration>

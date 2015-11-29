@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+ 	xmlns:context="http://www.springframework.org/schema/context"
+ 	xmlns:mvc="http://www.springframework.org/schema/mvc"
+ 	xmlns:util="http://www.springframework.org/schema/util" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans 
+    	http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop 
+        http://www.springframework.org/schema/aop/spring-aop-4.1.xsd
+        http://www.springframework.org/schema/util 
+ 		http://www.springframework.org/schema/util/spring-util-4.1.xsd
+ 		http://www.springframework.org/schema/mvc 
+		http://www.springframework.org/schema/mvc/spring-mvc-4.1.xsd
+ 		http://www.springframework.org/schema/context 
+ 		http://www.springframework.org/schema/context/spring-context-4.1.xsd
+        http://www.springframework.org/schema/tx 
+        http://www.springframework.org/schema/tx/spring-tx-4.1.xsd">
+ 
+ 
+ 	<!-- Spring se encarga de levantar un bean sessionFactory -->
+ 	<bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+<!-- 		<property name="configLocation" value="classpath:hibernate.cfg.xml" /> -->
+ 		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">${hibernate.dialect}</prop>
+				<prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
+				<prop key="hibernate.format_sql">${hibernate.format_sql}</prop>
+				<prop key="hibernate.enable_lazy_load_no_trans">${hibernate.enable_lazy_load_no_trans}</prop>
+				<prop key="hibernate.hbm2ddl.auto">create-drop</prop>
+	            <prop key="hibernate.hbm2ddl.import_files">creates.sql</prop>
+				
+				<!-- Pool de conexiones que mejora al que viene con hibernate por defecto -->
+				<prop key="hibernate.c3p0.min_size">${hibernate.c3p0.min_size}</prop> 					<!-- Minimum number of JDBC connections in the pool -->
+				<prop key="hibernate.c3p0.max_size">${hibernate.c3p0.max_size}</prop>					<!-- Maximum number of JDBC connections in the pool -->
+				<prop key="hibernate.c3p0.timeout">${hibernate.c3p0.timeout}</prop>						<!-- When an idle connection is removed from the pool (in second -->
+				<prop key="hibernate.c3p0.max_statements">${hibernate.c3p0.max_statements}</prop>		<!-- Number of prepared statements will be cached -->
+				<prop key="hibernate.c3p0.idle_test_period">${hibernate.c3p0.idle_test_period}</prop>	<!-- idle time in seconds before a connection is automatically validated -->
+			</props>
+		</property>
+		<property name="packagesToScan" value="es.enbinario.model" />
+		<!-- Sustituido por la linea anterior -->		
+<!-- 		<property name="annotatedClasses">   -->
+<!--             <list>   -->
+<!--                 <value>es.enbinario.model.Employee</value>   -->
+<!--             </list>   -->
+<!--         </property>  -->
+	</bean>
+
+	<!-- Spring se encarga de levantar un bean transactionManager 
+		La siguiente declaración ea para que sessionFactory soporte de manera automática las transacciones
+	-->
+	<bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<tx:annotation-driven transaction-manager="transactionManager" mode="proxy"/>
+
+	<bean id="persistenceExceptionTranslationPostProcessor"
+		class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
+ 
+ 
+ </beans>
