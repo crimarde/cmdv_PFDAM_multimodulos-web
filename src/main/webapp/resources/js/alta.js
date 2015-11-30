@@ -35,7 +35,7 @@ $(document).ready(function(){
 	$('#registerForm').on('submit',function(event){
 		event.preventDefault();
 		$.get('./check',
-				{$('#registerForm').serialize()}, 
+				$('#registerForm').serialize(), 
 				function (data){
 					if(data){
 						alert("No se puede registar, ya existe");

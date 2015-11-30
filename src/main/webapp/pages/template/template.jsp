@@ -23,7 +23,7 @@
 	</style>
 </head>
 <body>	
-	<div class="container-fluid" style="border: #C1C1C1 solid 1px; border-radius:10px;">
+	<div class="container-fluid" style="border: #C1C1C1 solid 1px; border-radius:10px; margin-top: 60px">
 		
 		<!-- Header -->
 		<div class="row">
@@ -35,12 +35,12 @@
 		
 		<div class="row">
 			<!-- Menu Page -->
-			<div class="col-md-3" style="height:400px;background-color:#FCFCFC;">
+			<div class="col-md-2" style="height:70%;background-color:#FCFCFC;">
 				<tiles:insertAttribute name="menu" />
 			</div>
 			
 			<!-- Body Page -->
-			<div class="col-md-9">
+			<div class="col-md-10">
 				<tiles:insertAttribute name="body" />
 			</div>
 		</div>
