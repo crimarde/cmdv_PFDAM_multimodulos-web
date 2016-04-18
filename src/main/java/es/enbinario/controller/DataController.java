@@ -6,8 +6,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -27,7 +27,7 @@ public class DataController {
 	@Autowired
 	private DataService dataService;
 	
-	protected final Log logger = LogFactory.getLog(getClass());
+	private static final Logger logger = LoggerFactory.getLogger(DataController.class);
 
 	@RequestMapping("form")
 	public ModelAndView getForm(@ModelAttribute EmployeeDTO employeeDTO) {
@@ -52,18 +52,21 @@ public class DataController {
 	
 	@RequestMapping("register")
 	public ModelAndView registerUser(@ModelAttribute EmployeeDTO employee) {
+		logger.info("registerUser");
 		dataService.insertRow(employee);
 		return new ModelAndView("redirect:list");
 	}
 	
 	@RequestMapping("list")
 	public ModelAndView getList() {
+		logger.info("getList");
 		List<EmployeeDTO> employeeList = dataService.getList();
 		return new ModelAndView("personList","employeeList",employeeList);
 	}
 	
 	@RequestMapping("delete")
 	public ModelAndView deleteUser(@RequestParam long id) {
+		logger.info("deleteUser with id " + id);
 		dataService.deleteRow(id);
 		return new ModelAndView("redirect:list");
 	}
@@ -79,6 +82,8 @@ public class DataController {
 	 * 	El modelMap es una altenativa al ModelAndView (hacen exactmente lo mismo, es sólo cuestión de nomenclatura)
 	 */
 	public ModelAndView editUser(@RequestParam long id, @ModelAttribute EmployeeDTO employeeDTO, ModelMap model) {
+		logger.info("editUser with id " + id);
+		logger.debug("asd");
 		EmployeeDTO employeeObject = dataService.getRowById(id);
 		EmployeeDTO employeeObject2 = dataService.getRowById(((EmployeeDTO)model.get("employeeDTO")).getId());
 		EmployeeDTO employeeObject3 = dataService.getRowById(employeeDTO.getId());
@@ -89,6 +94,7 @@ public class DataController {
 	
 	@RequestMapping("update")
 	public ModelAndView updateUser(HttpServletRequest request, @ModelAttribute EmployeeDTO employeeDTO, ModelMap model) {
+		logger.info("updateUser with id " + employeeDTO.getId());
 		dataService.updateRow(employeeDTO);
 		
 		RedirectView redirectView = new RedirectView();

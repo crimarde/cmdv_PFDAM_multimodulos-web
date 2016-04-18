@@ -6,6 +6,10 @@
 
 	<div style="color: teal; font-size: 30px">Listado de contactos</div>
 
+	<!-- employeeList es una lista que el controlador se encarga de cargarlo en el modelo de la vista -->
+	<!-- alternativa: la que más me gusta se basa en tener un controlador con scope request y un dto con 
+		scope view anotado con component, que se inyecta al controlador para que lo actualice con cada petición 
+		que se realice al ccontrolador -->
 	<c:if test="${!empty employeeList}">
 		<div class="container-fluid">
 			<div class="row">
@@ -26,19 +30,19 @@
 								<td>Teléfono</td>
 								<td colspan="2">Operaciones</td>
 							</tr>
-							<c:forEach items="${employeeList}" var="user">
+							<c:forEach items="${employeeList}" var="emleaado">
 								<tr class="active">
 
-									<td><c:out value="${user.firstName}" /></td>
-									<td><c:out value="${user.lastName}" /></td>
-									<td><c:out value="${user.email}" /></td>
-									<td><c:out value="${user.phone}" /></td>
-									<td><input id="${user.id}" type="button" value="Editar"
+									<td><c:out value="${emleaado.firstName}" /></td>
+									<td><c:out value="${emleaado.lastName}" /></td>
+									<td><c:out value="${emleaado.email}" /></td>
+									<td><c:out value="${emleaado.phone}" /></td>
+									<td><input id="${emleaado.id}" type="button" value="Editar"
 										class="btn btn-primary btn-xs"
-										onclick="redirige(${user.id},'${user.firstName}','${user.lastName}','${user.email}','${user.phone}');">
+										onclick="redirige(${emleaado.id},'${emleaado.firstName}','${emleaado.lastName}','${emleaado.email}','${emleaado.phone}');">
 									</td>
-									<td><input id="${user.id}" type="button" value="Eliminar"
-										class="btn btn-danger btn-xs" onclick="eliminar(${user.id});">
+									<td><input id="${emleaado.id}" type="button" value="Eliminar"
+										class="btn btn-danger btn-xs" onclick="eliminar(${emleaado.id});">
 									</td>
 								</tr>
 							</c:forEach>
